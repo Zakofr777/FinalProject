@@ -18,8 +18,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>(builder =>
         {
             builder.HasKey(u => u.Id);
-            builder.Property(u => u.username).IsRequired().HasMaxLength(50);
-            builder.HasIndex(u => u.username).IsUnique();
+            builder.Property(u => u.UserName).IsRequired().HasMaxLength(50);
+            builder.HasIndex(u => u.UserName).IsUnique();
             builder.Property(u => u.Salary).HasPrecision(18, 2);
             builder.Property(u => u.IsBlocked).HasDefaultValue(false);
         });
