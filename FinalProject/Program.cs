@@ -6,6 +6,7 @@ using FinalProject.Application.Validators;
 using FinalProject.Filters;
 using FinalProject.Infrastructure.Persistence;
 using FinalProject.Infrastructure.Repositories;
+using FinalProject.Middleware;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -35,9 +36,6 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<ValidationFilter>();
 });
 
-builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterDtoValidator>();
-
 var jwtSecret = builder.Configuration["JwtSettings:Secret"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -55,7 +53,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -89,6 +86,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
